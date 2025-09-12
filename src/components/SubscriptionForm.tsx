@@ -1,95 +1,114 @@
+// src/components/SubscriptionForm.tsx
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Subscription } from '@/app/page';
 
-// Mendefinisikan tipe props yang akan diterima komponen ini dari parent (page.tsx)
 type FormProps = {
   onAddSubscription: (subscription: Omit<Subscription, 'id'>) => void;
+  onUpdateSubscription: (subscription: Subscription) => void;
+  editingData: Subscription | null;
 };
 
-export default function SubscriptionForm({ onAddSubscription }: FormProps) {
-  // State untuk setiap input di dalam form
+export default function SubscriptionForm({ onAddSubscription, onUpdateSubscription, editingData }: FormProps) {
   const [name, setName] = useState('');
   const [cost, setCost] = useState('');
-  const [cycle, setCycle] = useState<'Bulanan' | 'Tahunan'>('Bulanan');
+  const [cycle, setCycle] = useState<'Monthly' | 'Yearly'>('Monthly');
+  const [currency, setCurrency] = useState<'IDR' | 'USD'>('IDR');
 
-  // Fungsi ini akan berjalan saat tombol "Simpan" diklik
-  const handleSubmit = (e: React.FormEvent) => {
-    // Mencegah halaman refresh saat form di-submit
-    e.preventDefault();
+  const isEditMode = editingData !== null;
 
-    // Console.log untuk debugging, Anda bisa melihat ini di browser console
-    console.log('Form submitted with data:', { name, cost, cycle });
-
-    // Validasi sederhana: pastikan nama dan biaya tidak kosong
-    if (!name || !cost) {
-      alert('Nama langganan dan biaya tidak boleh kosong!');
-      return;
+  useEffect(() => {
+    if (isEditMode) {
+      setName(editingData.name);
+      setCost(String(editingData.cost));
+      setCycle(editingData.billingCycle);
+      setCurrency(editingData.currency);
     }
+  }, [editingData, isEditMode]);
 
-    // Panggil fungsi yang diberikan dari parent (page.tsx) dengan data baru
-    onAddSubscription({
-      name,
-      cost: parseFloat(cost), // Ubah string biaya menjadi angka
-      billingCycle: cycle,
-    });
-
-    // Reset form ke kondisi awal setelah berhasil submit
-    setName('');
-    setCost('');
-    setCycle('Bulanan');
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !cost) return;
+    const subscriptionData = { name, cost: parseFloat(cost), billingCycle: cycle, currency };
+    if (isEditMode) {
+      onUpdateSubscription({ ...editingData, ...subscriptionData });
+    } else {
+      onAddSubscription(subscriptionData);
+    }
+    setName(''); setCost(''); setCycle('Monthly'); setCurrency('IDR');
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg border border-slate-200 space-y-4 mb-6 shadow-sm">
-      <h2 className="text-xl font-bold text-slate-900">Tambah Langganan Baru</h2>
+    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg border border-slate-200 space-y-6 mb-6 shadow-sm">
+      <h2 className="text-xl font-bold text-slate-900">{isEditMode ? 'Edit Subscription' : 'Add New Subscription'}</h2>
       
-      {/* Input untuk Nama Langganan */}
+      {/* Input Nama */}
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-slate-700">Nama Langganan</label>
+        <label htmlFor="name" className="block text-sm font-semibold text-slate-700 mb-1">Subscription Name</label>
         <input 
           type="text" 
           id="name" 
           value={name} 
           onChange={(e) => setName(e.target.value)} 
-          placeholder="cth: Netflix Premium"
-          className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-slate-500 focus:ring-slate-500 sm:text-sm" 
+          placeholder="e.g., Netflix Premium"
+          className="block w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500" 
           required
         />
       </div>
 
-      {/* Input untuk Biaya */}
-      <div>
-        <label htmlFor="cost" className="block text-sm font-medium text-slate-700">Biaya</label>
-        <input 
-          type="number" 
-          id="cost" 
-          value={cost} 
-          onChange={(e) => setCost(e.target.value)}
-          placeholder="cth: 186000"
-          className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-slate-500 focus:ring-slate-500 sm:text-sm"
-          required
-          min="0"
-        />
-      </div>
+      {/* Input Biaya & Siklus Tagihan dalam satu baris */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Input Biaya & Mata Uang (Digabung) */}
+        <div>
+          <label htmlFor="cost" className="block text-sm font-semibold text-slate-700 mb-1">Cost</label>
+          <div className="relative">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              {/* Simbol mata uang berubah dinamis */}
+              <span className="text-slate-500 sm:text-sm">{currency === 'IDR' ? 'Rp' : '$'}</span>
+            </div>
+            <input 
+              type="number" 
+              id="cost" 
+              value={cost} 
+              onChange={(e) => setCost(e.target.value)}
+              placeholder="15.99"
+              className="block w-full pl-10 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500"
+              required
+              min="0"
+              step="any"
+            />
+            <div className="absolute inset-y-0 right-0 flex items-center">
+              <select 
+                id="currency" 
+                value={currency} 
+                onChange={(e) => setCurrency(e.target.value as 'IDR' | 'USD')}
+                className="h-full rounded-md border-transparent bg-transparent py-0 pl-2 pr-7 text-gray-500 focus:ring-2 focus:ring-inset focus:ring-slate-600 sm:text-sm"
+              >
+                <option>IDR</option>
+                <option>USD</option>
+              </select>
+            </div>
+          </div>
+        </div>
 
-      {/* Pilihan untuk Siklus Tagihan */}
-      <div>
-        <label htmlFor="cycle" className="block text-sm font-medium text-slate-700">Siklus Tagihan</label>
-        <select 
-          id="cycle" 
-          value={cycle} 
-          onChange={(e) => setCycle(e.target.value as 'Bulanan' | 'Tahunan')}
-          className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-slate-500 focus:ring-slate-500 sm:text-sm"
-        >
-          <option value="Bulanan">Bulanan</option>
-          <option value="Tahunan">Tahunan</option>
-        </select>
+        {/* Pilihan Siklus Tagihan */}
+        <div>
+          <label htmlFor="cycle" className="block text-sm font-semibold text-slate-700 mb-1">Billing Cycle</label>
+          <select 
+            id="cycle" 
+            value={cycle} 
+            onChange={(e) => setCycle(e.target.value as 'Monthly' | 'Yearly')}
+            className="appearance-none block w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500 bg-chevron-down bg-no-repeat bg-right pr-8"
+          >
+            <option value="Monthly">Monthly</option>
+            <option value="Yearly">Yearly</option>
+          </select>
+        </div>
       </div>
       
       {/* Tombol Simpan */}
-      <button type="submit" className="w-full bg-slate-900 text-white font-semibold py-2 px-4 rounded-lg hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
-        Simpan
+      <button type="submit" className="w-full bg-slate-900 text-white font-bold py-2.5 px-4 rounded-lg hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
+        {isEditMode ? 'Save Changes' : 'Save Subscription'}
       </button>
     </form>
   );
