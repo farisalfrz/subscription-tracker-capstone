@@ -101,7 +101,7 @@ export default function HomePage() {
           ))
         ) : (
           <div className="text-center p-8 bg-white rounded-lg border border-slate-200">
-            <p className="text-slate-500">You haven't added any subscriptions yet.</p>
+            <p className="text-slate-500">You haven&apos;t added any subscriptions yet.</p>
           </div>
         )}
       </div>
