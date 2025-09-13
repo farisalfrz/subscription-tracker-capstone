@@ -17,13 +17,6 @@ export default function AiAdvisor({ subscriptions }: AiAdvisorProps) {
     setAiResponse('');
     setError('');
 
-    // --- LOGIKA BARU DIMULAI DI SINI ---
-
-    // 1. Cek apakah mata uangnya campuran atau tunggal
-    const currencies = new Set(subscriptions.map(sub => sub.currency));
-    const isMixedCurrency = currencies.size > 1;
-
-    // 2. Siapkan daftar langganan dalam format teks (tidak berubah)
     let subscriptionListText = "";
     subscriptions.forEach(sub => {
       const monthlyCost = sub.billingCycle === 'Yearly' ? (sub.cost / 12) : sub.cost;
@@ -33,12 +26,12 @@ export default function AiAdvisor({ subscriptions }: AiAdvisorProps) {
       subscriptionListText += `- ${sub.name}: ${formattedCost} per month\n`;
     });
     
-    // 3. Siapkan DUA prompt yang berbeda
     const currentDate = new Date().toLocaleDateString('en-CA');
 
-    // Prompt A: Hanya untuk kasus mata uang campuran
+    // Prompt A: Untuk mata uang campuran (sedikit disempurnakan)
     const mixedCurrencyPrompt = `
-      You are a expert financial advisor. Your first and most important task is to help the user understand their spending by converting all their subscriptions to a single currency (IDR). Use today's date (${currentDate}) and a realistic exchange rate. After showing the conversion summary, provide 1-2 other general saving tips.
+      You are "SubSavvy", an expert AI financial coach. Your first task is to help the user understand their spending by converting all their subscriptions to a single currency (IDR). Use today's date (${currentDate}) and a realistic exchange rate. 
+      After showing the conversion summary, provide 1-2 other insightful, non-obvious saving tips based on the combined list.
 
       Here is the list:
       ${subscriptionListText}
@@ -46,24 +39,30 @@ export default function AiAdvisor({ subscriptions }: AiAdvisorProps) {
       Provide the output as a simple, numbered list of bullet points. Start each point with a bolded title.
     `;
 
-    // Prompt B: Hanya untuk kasus mata uang tunggal (Sangat Sederhana)
+    // Prompt B: Untuk mata uang tunggal (dirombak total menjadi lebih ahli)
     const singleCurrencyPrompt = `
-      You are a financial advisor. Analyze the following list of digital subscriptions and their costs. 
-      Provide 3-4 concise and actionable saving tips based ONLY on the services and their prices. 
-      DO NOT mention currency, currency conversion, or exchange rates at all. Focus only on practical financial advice.
+      You are "SubSavvy", an expert AI financial coach specializing in helping young professionals manage and optimize their digital subscriptions. Your advice must be insightful, creative, and go beyond generic tips.
+
+      Before providing suggestions, mentally analyze the user's list through these three lenses:
+      1.  **Redundancy:** Are there overlapping services? (e.g., multiple music or video streaming platforms).
+      2.  **Value Optimization:** Is the user on the right tier? Could they get more value via family plans, annual discounts, or student plans?
+      3.  **Alternatives:** Are there more cost-effective or local alternatives?
+
+      Based on your analysis, provide 3 highly practical and insightful suggestions for the subscription list below. Frame your advice in an encouraging and expert tone.
+      DO NOT mention currency conversion at all.
 
       Here is the list:
       ${subscriptionListText}
 
       Provide the output as a simple, numbered list of bullet points. Start each point with a bolded title.
     `;
-
-    // 4. Pilih prompt yang akan digunakan berdasarkan logika di JavaScript
+    
+    const currencies = new Set(subscriptions.map(sub => sub.currency));
+    const isMixedCurrency = currencies.size > 1;
     const finalPrompt = isMixedCurrency ? mixedCurrencyPrompt : singleCurrencyPrompt;
 
-    // --- LOGIKA BARU SELESAI ---
-
     try {
+      // ... (sisa kode fetch tidak berubah)
       const response = await fetch('/api/get-ai-suggestion', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
