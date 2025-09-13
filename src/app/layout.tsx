@@ -6,8 +6,8 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'SubTracker AI',
-  description: 'Track your subscriptions with AI-powered insights',
+  title: 'Subsavvy: AI Subscription Manager',
+  description: 'Manage your subscriptions smartly with AI-powered insights.',
 }
 
 export default function RootLayout({
