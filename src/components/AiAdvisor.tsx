@@ -38,7 +38,7 @@ export default function AiAdvisor({ subscriptions }: AiAdvisorProps) {
 
     // Prompt A: Hanya untuk kasus mata uang campuran
     const mixedCurrencyPrompt = `
-      You are a financial advisor. Your first and most important task is to help the user understand their spending by converting all their subscriptions to a single currency (IDR). Use today's date (${currentDate}) and a realistic exchange rate. After showing the conversion summary, provide 1-2 other general saving tips.
+      You are a expert financial advisor. Your first and most important task is to help the user understand their spending by converting all their subscriptions to a single currency (IDR). Use today's date (${currentDate}) and a realistic exchange rate. After showing the conversion summary, provide 1-2 other general saving tips.
 
       Here is the list:
       ${subscriptionListText}
