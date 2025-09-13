@@ -1,4 +1,3 @@
-// src/components/SubscriptionForm.tsx
 "use client";
 import { useState, useEffect } from 'react';
 import { Subscription } from '@/app/page';
@@ -38,6 +37,8 @@ export default function SubscriptionForm({ onAddSubscription, onUpdateSubscripti
     setName(''); setCost(''); setCycle('Monthly'); setCurrency('IDR');
   };
 
+  const costPlaceholder = currency === 'IDR' ? 'e.g., 50000' : 'e.g., 15.99';
+
   return (
     <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg border border-slate-200 space-y-6 mb-6 shadow-sm">
       <h2 className="text-xl font-bold text-slate-900">{isEditMode ? 'Edit Subscription' : 'Add New Subscription'}</h2>
@@ -71,7 +72,7 @@ export default function SubscriptionForm({ onAddSubscription, onUpdateSubscripti
               id="cost" 
               value={cost} 
               onChange={(e) => setCost(e.target.value)}
-              placeholder="15.99"
+              placeholder={costPlaceholder}
               className="block w-full pl-10 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500"
               required
               min="0"

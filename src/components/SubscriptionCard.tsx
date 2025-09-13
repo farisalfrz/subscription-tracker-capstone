@@ -33,12 +33,12 @@ export default function SubscriptionCard({ subscription, onDelete, onEdit }: Sub
         </p>
       </div>
       <div className="flex gap-3">
-        <button onClick={() => onEdit(subscription)} className="text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors">
+        <button onClick={() => onEdit(subscription)} className="text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors cursor-pointer">
           Edit
         </button>
         <button 
           onClick={() => onDelete(subscription.id)} 
-          className="text-sm font-semibold text-red-600 hover:text-red-800 transition-colors">
+          className="text-sm font-semibold text-red-600 hover:text-red-800 transition-colors cursor-pointer">
           Delete
         </button>
       </div>

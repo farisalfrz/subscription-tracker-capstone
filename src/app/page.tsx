@@ -76,7 +76,7 @@ export default function HomePage() {
         <h1 className="text-3xl font-bold tracking-tight">
           Your Subscriptions
         </h1>
-        <button onClick={handleToggleForm} className="bg-slate-900 text-white font-semibold py-2 px-4 rounded-lg hover:bg-slate-700 transition-colors">
+        <button onClick={handleToggleForm} className="bg-slate-900 text-white font-semibold py-2 px-4 rounded-lg hover:bg-slate-700 transition-colors cursor-pointer">
           {showForm ? 'Close Form' : '+ Add New'}
         </button>
       </div>
