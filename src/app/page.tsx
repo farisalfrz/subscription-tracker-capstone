@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import SubscriptionCard from '@/components/SubscriptionCard';
 import SubscriptionForm from '@/components/SubscriptionForm';
+import AiAdvisor from '@/components/AiAdvisor';
 
 // Defining the data structure with English types
 export interface Subscription {
@@ -105,6 +106,7 @@ export default function HomePage() {
           </div>
         )}
       </div>
+      <AiAdvisor subscriptions={subscriptions} />
     </Layout>
   );
 }
