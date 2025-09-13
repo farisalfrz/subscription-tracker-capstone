@@ -108,7 +108,7 @@ export default function SubscriptionForm({ onAddSubscription, onUpdateSubscripti
       </div>
       
       {/* Tombol Simpan */}
-      <button type="submit" className="w-full bg-slate-900 text-white font-bold py-2.5 px-4 rounded-lg hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
+      <button type="submit" className="w-full bg-slate-900 text-white font-bold py-2.5 px-4 rounded-lg hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 cursor-pointer">
         {isEditMode ? 'Save Changes' : 'Save Subscription'}
       </button>
     </form>
