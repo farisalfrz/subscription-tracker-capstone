@@ -52,13 +52,13 @@ export default function Footer() {
             </h3>
             <div className="flex flex-col gap-2 mt-4">
               <a
-                href="#"
+                href="/terms"
                 className="text-sm text-slate-500 hover:text-slate-900"
               >
                 Terms of Service
               </a>
               <a
-                href="#"
+                href="/privacy"
                 className="text-sm text-slate-500 hover:text-slate-900"
               >
                 Privacy Policy
