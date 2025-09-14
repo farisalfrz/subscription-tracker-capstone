@@ -47,7 +47,7 @@ The goal of this project is to create a practical, real-world application that s
 * **Animation:** [Framer Motion](https://www.framer.com/motion/) for page transitions.
 * **Notifications:** [React Hot Toast](https://react-hot-toast.com/) for user feedback.
 * **Backend API:** Next.js API Routes (Serverless Functions).
-* **AI Model:** IBM Granite Instruct (`granite-13b-instruct-v2`) via the [Replicate](https://replicate.com/) platform.
+* **AI Model:** IBM Granite Instruct (`granite-3.3-8b-instruct`) via the [Replicate](https://replicate.com/) platform.
 * **AI Interaction:** The official `replicate` Node.js library.
 * **Deployment:** [Vercel](https://vercel.com/).
 
