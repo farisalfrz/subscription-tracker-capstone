@@ -35,7 +35,7 @@ export default function ProfilePage() {
         <p>
           Hello! I&#39;m a passionate web developer with a keen interest in the
           intersection of technology and everyday life. Subsavvy is my capstone
-          project for the prestigious IBM SkillsBuild x Hacktiv8 program, where
+          project for the prestigious Student Development Initiative Hacktiv8 x IBM SkillsBuild program, where
           I challenged myself to build a full-stack application from scratch.
         </p>
         <p>
