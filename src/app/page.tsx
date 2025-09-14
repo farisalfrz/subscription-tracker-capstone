@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import Layout from "@/components/Layout";
 import SubscriptionCard from "@/components/SubscriptionCard";
 import SubscriptionForm from "@/components/SubscriptionForm";
 import AiAdvisor from "@/components/AiAdvisor";
@@ -71,14 +70,14 @@ export default function HomePage() {
   };
 
   return (
-    <Layout>
+    <>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold tracking-tight">
           Your Subscriptions
         </h1>
         <button
           onClick={handleToggleForm}
-          className="bg-slate-900 text-white font-semibold py-2 px-4 rounded-lg hover:bg-slate-700 transition-colors cursor-pointer"
+          className="bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
           {showForm ? "Close Form" : "+ Add New"}
         </button>
@@ -129,6 +128,6 @@ export default function HomePage() {
       </div>
 
       <AiAdvisor subscriptions={subscriptions} />
-    </Layout>
+    </>
   );
 }
